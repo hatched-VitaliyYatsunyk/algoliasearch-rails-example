@@ -15,7 +15,7 @@
 
   <div class="row">
     <div class="col-sm-3" id="facets">
-      <div id="companies"></div>
+      <div id="products"></div>
     </div>
     <div class="col-sm-9" id="hits"></div>
   </div>
@@ -25,23 +25,22 @@
 <script type="text/javascript">
   $(document).ready(function() {
     var hitTemplate = '<div class="hit-instant-search">' +
-      '<div class="company">{{{_highlightResult.company.value}}}</div>' +
-      '<div class="name">{{{_highlightResult.name.value}}}</div>' +
-      '<div class="created_at">{{{created_at}}}</div>' +
-      '<div class="email"><a href="mailto:{{{_highlightResult.email.value}}}">{{{_highlightResult.email.value}}}</a></div>' +
+      '<div class="description">{{{_highlightResult.description.value}}}</div>' +
+      '<div class="sku">{{{_highlightResult.sku.value}}}</div>' +
+      '<div class="regular_price">${{{_highlightResult.regular_price.value}}}</a></div>' +
     '</div>';
 
     var search = instantsearch({
       appId: '<%= ENV['ALGOLIASEARCH_APPLICATION_ID'] %>',
       apiKey: '<%= ENV['ALGOLIASEARCH_API_KEY_SEARCH'] %>',
-      indexName: '<%= Contact.index_name %>',
+      indexName: '<%= Product.index_name %>',
       urlSync: true
     });
 
     search.addWidget(
       instantsearch.widgets.searchBox({
         container: '#q',
-        placeholder: 'Search for contacts',
+        placeholder: 'Search for products',
         autofocus: false,
         poweredBy: true
       })
@@ -60,11 +59,11 @@
 
     search.addWidget(
       instantsearch.widgets.refinementList({
-        container: '#companies',
-        attributeName: 'company',
+        container: '#products',
+        attributeName: 'description',
         limit: 10,
         templates: {
-          header: 'Companies'
+          header: 'Products'
         },
         cssClasses: {
           root: 'list-group',

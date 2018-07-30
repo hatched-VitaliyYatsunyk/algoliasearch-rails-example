@@ -9,13 +9,13 @@
 <div class="container">
   <div class="row">
     <div class="col-sm-6 col-sm-offset-3">
-      <input name="email" placeholder="Name, email or company" id="q" class="form-control" />
+      <input name="product" placeholder="Product description, SKU, or tag" id="q" class="form-control" />
 
       <div class="search-terms">
         Try
-        <a href="javascript:void(0)">John</a>,
-        <a href="javascript:void(0)">Jonn</a>,
-        <a href="javascript:void(0)">roebekah</a>
+        <a href="javascript:void(0)">Vanila</a>,
+        <a href="javascript:void(0)">Bbq</a>,
+        <a href="javascript:void(0)">Benas</a>
       </div>
     </div>
   </div>
@@ -26,13 +26,13 @@
   $(document).ready(function() {
     var client = algoliasearch('<%= ENV['ALGOLIASEARCH_APPLICATION_ID'] %>', '<%= ENV['ALGOLIASEARCH_API_KEY_SEARCH'] %>');
     var template = Hogan.compile('<div class="hit-auto-complete">' +
-        '<div class="name">{{{_highlightResult.name.value}}}</div>' +
-        '<div class="email">{{{_highlightResult.email.value}}}</div>' +
-        '<div class="company">{{{_highlightResult.company.value}}}</div>' +
+        '<div class="description">{{{_highlightResult.description.value}}}</div>' +
+        '<div class="sku">{{{_highlightResult.sku.value}}}</div>' +
+        '<div class="regular_price">${{{_highlightResult.regular_price.value}}}</div>' +
       '</div>');
     var ac = autocomplete('#q', { hint: true }, {
-      source: autocomplete.sources.hits(client.initIndex('<%= Contact.index_name %>'), { hitsPerPage: 5 }),
-      displayKey: 'email',
+      source: autocomplete.sources.hits(client.initIndex('<%= Product.index_name %>'), { hitsPerPage: 5 }),
+      displayKey: 'product',
       templates: {
         suggestion: function(hit) {
           return template.render(hit);
